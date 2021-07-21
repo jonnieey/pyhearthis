@@ -89,7 +89,10 @@ class HearThis:
             if 'success' in json_data:
                 if json_data['success'] is False:
                     return dict()
-
+            
+            if isinstance(json_data, list):
+                return list(filter(lambda itm: not isinstance(itm, bool), json_data))
+            
             return json_data
 
     async def _get_as_text(self, route, request=None, with_endpoint: bool = True):

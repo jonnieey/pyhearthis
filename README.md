@@ -20,7 +20,7 @@ async def do_some_queries():
 
     async with aiohttp.ClientSession() as session:
         hearthis = HearThis(session)
-        user = await hearthis.login("mylogin", "mypassword)
+        user = await hearthis.login("mylogin", "mypassword")
 
         # Search for music
         search_result = await hearthis.search(user, "MySearchQuery")
