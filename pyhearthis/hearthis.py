@@ -1,10 +1,14 @@
+from os import urandom
 import aiohttp
 import json
+import re
 from enum import Enum
 from typing import List
 from datetime import date, timedelta
-from .models import SingleTrack, User, as_query_param, cast_dict, cast_list, LoggedinUser, Category, Playlist
-from .hearthis_requests import AddToExistingPlaylistRequest, AddToNewPlaylistRequest, DeleteFromPlaylistRequest, LoginRequest, LogoutRequest, FeedRequest, CredentialsRequest, PagedRequest, AddPlaylistRequest, PlaylistsRequest, DeletePlaylistRequest, SearchRequest, ArtistTracksRequest
+
+from aiohttp.client_exceptions import InvalidURL
+from .models import SingleArtist, SingleTrack, User, as_query_param, cast_dict, cast_list, LoggedinUser, Category, Playlist
+from .hearthis_requests import AddToExistingPlaylistRequest, AddToNewPlaylistRequest, DeleteFromPlaylistRequest, FollowRequest, LoginRequest, LogoutRequest, FeedRequest, CredentialsRequest, PagedRequest, AddPlaylistRequest, PlaylistsRequest, DeletePlaylistRequest, SearchRequest, ArtistTracksRequest
 
 
 class FeedType(Enum):
@@ -76,6 +80,15 @@ class HearThis:
 
         return ""
 
+    async def _get_as_bytes(self, url):
+        try:
+            async with self._client_session.get(url) as response:
+                if response.status == 200:
+                    return await response.read()
+                return None
+        except InvalidURL:
+            return None
+
     async def _get_as_json(self, route, request=None):
         query = f"{HearThis.api_endpoint}{route}"
 
@@ -85,6 +98,9 @@ class HearThis:
 
         async with self._client_session.get(query) as response:
             json_data = await response.json()
+
+            if json_data is None:
+                return dict()
 
             if 'success' in json_data:
                 if json_data['success'] is False:
@@ -250,3 +266,26 @@ class HearThis:
         json_data = await self._get_as_json(route, request)
 
         return list(map(HearThis._json_to_track, cast_list(json_data)))
+
+    async def reload_single_track(self, user: LoggedinUser, track: SingleTrack) -> SingleTrack:
+        route = f"{track.user.permalink}/{track.permalink}"
+        data = await self._get_as_json(route)
+        return HearThis._json_to_track(data)
+
+    async def get_single_artist(self, user: LoggedinUser, permalink: str) -> SingleArtist:
+        route = f"{permalink}"
+        json_data = await self._get_as_json(route)
+        self._replace_key(json_data, "720p_url", "p_url")
+        return SingleArtist(**cast_dict(json_data))
+
+    async def download_track(self, user: LoggedinUser, track: SingleTrack) -> bytes:
+        return await self._get_as_bytes(track.download_url)
+
+    async def toggle_follow_user_from_track(self, user: LoggedinUser, track: SingleTrack) -> bool:
+        
+        artist = await self.get_single_artist(user, track.user.permalink)
+        if not artist.following:
+            route = "user_ajax_function.php"
+            response = await self._post_as_form_data(route, FollowRequest(user.key, user.secret, track.user.id), 200)
+            data = json.loads(response)
+            return data["follow"]

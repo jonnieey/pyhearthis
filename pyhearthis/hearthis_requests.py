@@ -108,3 +108,9 @@ class ArtistTracksRequest(NamedTuple):
     type: str
     page: int = 1
     count: int = 5
+
+class FollowRequest(NamedTuple):
+    key: str
+    secret: str
+    userid: str
+    action: str = 'follow'
