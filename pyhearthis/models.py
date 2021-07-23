@@ -17,6 +17,9 @@ def as_query_param(item: NamedTuple) -> str:
 
 def get_value(key, value):
     
+    if key == "downloadable":
+        return True if (value == 1) or value == '1' else False
+
     if key == "bpm":
         return float(value)
     
@@ -90,7 +93,7 @@ class SingleTrack(NamedTuple):
     duration: int
     permalink: str
     description: str
-    downloadable: int
+    downloadable: bool
     genre: str
     genre_slush: str
     title: str
@@ -137,3 +140,31 @@ class Playlist(NamedTuple):
     artwork_url: str
     track_count: int
     user: User
+
+class SingleArtist(NamedTuple):
+    id: int
+    permalink: str
+    username: str
+    uri: str
+    permalink: str
+    permalink_url: str
+    avatar_url: str
+    background_url: str
+    description: str
+    track_count: int
+    playlist_count: int
+    likes_count: int
+    followers_count: int
+    following: bool
+    following_count: int
+    premium: bool
+    allow_push: int
+    geo: str
+    p_url: str
+    avatar_url: str
+    thumb_url: str
+    caption: str
+
+
+
+

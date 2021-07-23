@@ -355,3 +355,17 @@ class HearThisTests(IsolatedAsyncioTestCase):
         self.assertEqual(feed.title, "Shawne @ Back To The Roots 2 (05.07.2014)")
         self.assertIsNotNone(feed.user.username)
         self.assertEqual(feed.id, 48250)
+
+    async def test_that_get_single_artist_returns_expected_data(self):
+        # Arrange
+        mock = AsyncMock()
+        mock.get = RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/myuserpermalink", 'get_single_artist_response.json', )
+        user = create_logged_in_user()
+        sut = HearThis(mock)
+
+        # Act
+        result = await sut.get_single_artist(user, "myuserpermalink")
+
+        # Assert
+        self.assertIsNotNone(result)
+        self.assertEqual(result.id, 100000)
