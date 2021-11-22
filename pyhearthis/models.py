@@ -126,6 +126,8 @@ class SingleTrack(NamedTuple):
     reshared: bool
     played: bool
     liked: bool
+    fan_exclusive_play: int = 0
+    fan_exclusive_download: int = 0
 
 class Playlist(NamedTuple):
     id: int
