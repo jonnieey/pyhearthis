@@ -49,6 +49,8 @@
       "reshares_count": 2,
       "reshared": false,
       "played": false,
-      "liked": false
+      "liked": false,
+      "fan_exclusive_play":0,
+      "fan_exclusive_download":0
     }
   ]
