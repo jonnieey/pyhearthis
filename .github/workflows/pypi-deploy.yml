@@ -7,8 +7,6 @@ on:
     
 jobs:
   build-and-publish:
-    # if: ${{ github.event.label.name == 'release' }}
-    if: github.event.pull_request.merged == true # only merged pull requests must trigger this job
     name: Build and publish to PyPI
     runs-on: ubuntu-latest
     steps:
