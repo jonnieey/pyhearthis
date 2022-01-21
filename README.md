@@ -1,4 +1,13 @@
 # pyhearthis
+
+.. image:: https://img.shields.io/pypi/v/pyhearthis
+    :target: https://pypi.org/project/pyhearthis/
+    :alt: Latest PyPI version
+
+.. image:: https://img.shields.io/github/workflow/status/universalappfactory/pyhearthis/Deploy%20to%20PyPI/main
+    :target: https://github.com/universalappfactory/pyhearthis/actions/workflows/pypi-deploy.yml
+    :alt: CI build status
+
 A python client for the [hearthis.at](https://hearthis.at/) music community API
 
 The API documentation is availabe at
