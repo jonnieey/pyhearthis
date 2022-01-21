@@ -3,7 +3,7 @@ name: Deploy to PyPI
 on: 
   push:
     tags: v[0-9]+.[0-9]+.[0-9]+(b\d+)?
-    branches: main
+    branches-ignore: develop
 jobs:
   build-and-publish:
     name: Build and publish to PyPI
