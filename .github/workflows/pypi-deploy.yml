@@ -1,16 +1,9 @@
 name: Deploy to PyPI
 
-# on:
-#   push:
-#     branches:
-#       - main
-
 on:
-  pull_request:
+  push:
     branches:
       - main
-    types:
-      - closed
     
 jobs:
   build-and-publish:
