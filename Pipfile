@@ -8,11 +8,14 @@ aiohttp = "*"
 pytest-aiohttp = "*"
 
 [dev-packages]
+autopep8 = "*"
+pylint = "*"
 
 [requires]
 python_version = "3.8"
 
 [scripts]
+linting = "pylint --rcfile .pylintrc pyhearthis"
 tests = "pytest tests"
 build = "python3 setup.py sdist bdist_wheel"
 deploy = "python3 -m twine upload dist/*"

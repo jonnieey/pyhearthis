@@ -1,9 +1,7 @@
 from unittest import IsolatedAsyncioTestCase
-from pyhearthis.hearthis import HearThis
 from unittest.mock import AsyncMock
-# from mocks import mocks.RequestContextManagerMock, create_logged_in_user, create_single_track, create_category, create_playlist
+from pyhearthis.hearthis import HearThis
 from tests import mocks
-# from response_data import WAVEFORM_RESPONSE_DATA
 from tests import response_data
 
 
@@ -12,7 +10,12 @@ class HearThisTests(IsolatedAsyncioTestCase):
     async def test_that_login_returns_expected_data(self):
         # Arrange
         mock = AsyncMock()
-        mock.get = mocks.RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/login", 'login_response.json', email="mymail@test.de", password="mypassword")
+        mock.get = mocks.RequestContextManagerMock.with_json_response(
+            "https://api-v2.hearthis.at/login",
+            'login_response.json',
+            email="mymail@test.de",
+            password="mypassword"
+        )
         sut = HearThis(mock)
 
         # Act
@@ -26,7 +29,14 @@ class HearThisTests(IsolatedAsyncioTestCase):
     async def test_that_get_feeds_returns_expected_data(self):
         # Arrange
         mock = AsyncMock()
-        mock.get = mocks.RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/feed/", 'get_feeds_response.json', key="mykey", secret="mysecret", page="1", count="5")
+        mock.get = mocks.RequestContextManagerMock.with_json_response(
+            "https://api-v2.hearthis.at/feed/",
+            'get_feeds_response.json',
+            key="mykey",
+            secret="mysecret",
+            page="1",
+            count="5"
+        )
         user = mocks.create_logged_in_user()
         sut = HearThis(mock)
 
@@ -36,14 +46,16 @@ class HearThisTests(IsolatedAsyncioTestCase):
         # Assert
         self.assertIsNotNone(result)
         feed = result[0]
-        self.assertEqual(feed.title, "Shawne @ Back To The Roots 2 (05.07.2014)")
+        self.assertEqual(
+            feed.title, "Shawne @ Back To The Roots 2 (05.07.2014)")
         self.assertIsNotNone(feed.user.username)
         self.assertEqual(feed.id, 48250)
 
     async def test_that_get_categories_returns_expected_data(self):
         # Arrange
         mock = AsyncMock()
-        mock.get = mocks.RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/categories/", 'get_categories.json')
+        mock.get = mocks.RequestContextManagerMock.with_json_response(
+            "https://api-v2.hearthis.at/categories/", 'get_categories.json')
         sut = HearThis(mock)
 
         # Act
@@ -58,7 +70,8 @@ class HearThisTests(IsolatedAsyncioTestCase):
     async def test_that_get_waveform_data_returns_expected_data(self):
         # Arrange
         client_session_mock = AsyncMock()
-        client_session_mock.get = mocks.RequestContextManagerMock.with_return_value("https://waveform.data", response_data.WAVEFORM_RESPONSE_DATA)
+        client_session_mock.get = mocks.RequestContextManagerMock.with_return_value(
+            "https://waveform.data", response_data.WAVEFORM_RESPONSE_DATA)
         track = mocks.create_single_track()
         sut = HearThis(client_session_mock)
 
@@ -72,7 +85,14 @@ class HearThisTests(IsolatedAsyncioTestCase):
     async def test_that_get_category_tracks_returns_expected_data(self):
         # Arrange
         client_session_mock = AsyncMock()
-        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/categories/drumandbass", 'get_genre_list_response.json', key="mykey", secret="mysecret", page="1", count="5")
+        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response(
+            "https://api-v2.hearthis.at/categories/drumandbass",
+            'get_genre_list_response.json',
+            key="mykey",
+            secret="mysecret",
+            page="1",
+            count="5"
+        )
         user = mocks.create_logged_in_user()
         category = mocks.create_category()
         sut = HearThis(client_session_mock)
@@ -83,7 +103,8 @@ class HearThisTests(IsolatedAsyncioTestCase):
         # Assert
         self.assertIsNotNone(result)
         feed = result[0]
-        self.assertEqual(feed.title, "Shawne @ Back To The Roots 2 (05.07.2014)")
+        self.assertEqual(
+            feed.title, "Shawne @ Back To The Roots 2 (05.07.2014)")
         self.assertEqual(feed.id, 48250)
         self.assertIsNotNone(feed.user.username)
 
@@ -98,7 +119,8 @@ class HearThisTests(IsolatedAsyncioTestCase):
         await sut.create_playlist(user, "MyNewPlaylist")
 
         # Assert
-        posted_data = mocks.RequestContextManagerMock.pop_post_data_for_url("https://api-v2.hearthis.at/set_ajax_add.php")
+        posted_data = mocks.RequestContextManagerMock.pop_post_data_for_url(
+            "https://api-v2.hearthis.at/set_ajax_add.php")
         expected_data = {
             'action': 'createnew',
             'key': 'mykey',
@@ -113,7 +135,15 @@ class HearThisTests(IsolatedAsyncioTestCase):
     async def test_that_get_playlists_returns_expected_data(self):
         # Arrange
         client_session_mock = AsyncMock()
-        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/mymail-oc", 'get_playlists_response.json', key="mykey", secret="mysecret", page="1", count="5", type="playlists")
+        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response(
+            "https://api-v2.hearthis.at/mymail-oc",
+            'get_playlists_response.json',
+            key="mykey",
+            secret="mysecret",
+            page="1",
+            count="5",
+            type="playlists"
+        )
         user = mocks.create_logged_in_user()
         sut = HearThis(client_session_mock)
 
@@ -130,7 +160,8 @@ class HearThisTests(IsolatedAsyncioTestCase):
     async def test_that_api_receives_expected_data_when_add_track_to_playlist(self):
         # Arrange
         client_session_mock = AsyncMock()
-        client_session_mock.post = mocks.RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/set_ajax_add.php", 'single_playlist.json')
+        client_session_mock.post = mocks.RequestContextManagerMock.with_json_response(
+            "https://api-v2.hearthis.at/set_ajax_add.php", 'single_playlist.json')
         user = mocks.create_logged_in_user()
         track = mocks.create_single_track()
         playlist = mocks.create_playlist()
@@ -140,7 +171,8 @@ class HearThisTests(IsolatedAsyncioTestCase):
         await sut.add_track_to_playlist(user, track, playlist)
 
         # Assert
-        posted_data = mocks.RequestContextManagerMock.pop_post_data_for_url("https://api-v2.hearthis.at/set_ajax_add.php")
+        posted_data = mocks.RequestContextManagerMock.pop_post_data_for_url(
+            "https://api-v2.hearthis.at/set_ajax_add.php")
         expected_data = {
             'action': 'add',
             'key': 'mykey',
@@ -154,7 +186,8 @@ class HearThisTests(IsolatedAsyncioTestCase):
     async def test_that_api_receives_expected_data_when_add_track_to_new_playlist(self):
         # Arrange
         client_session_mock = AsyncMock()
-        client_session_mock.post = mocks.RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/set_ajax_add.php", 'single_playlist.json')
+        client_session_mock.post = mocks.RequestContextManagerMock.with_json_response(
+            "https://api-v2.hearthis.at/set_ajax_add.php", 'single_playlist.json')
         user = mocks.create_logged_in_user()
         track = mocks.create_single_track()
         sut = HearThis(client_session_mock)
@@ -163,7 +196,8 @@ class HearThisTests(IsolatedAsyncioTestCase):
         await sut.add_track_to_new_playlist(user, track, 'my_new_playlist')
 
         # Assert
-        posted_data = mocks.RequestContextManagerMock.pop_post_data_for_url("https://api-v2.hearthis.at/set_ajax_add.php")
+        posted_data = mocks.RequestContextManagerMock.pop_post_data_for_url(
+            "https://api-v2.hearthis.at/set_ajax_add.php")
         expected_data = {
             'action': 'add',
             'key': 'mykey',
@@ -178,7 +212,12 @@ class HearThisTests(IsolatedAsyncioTestCase):
         # Arrange
         client_session_mock = AsyncMock()
         playlist = mocks.create_playlist()
-        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response(f"https://api-v2.hearthis.at/set/{playlist.permalink}/", 'get_playlist_tracks_response.json', key="mykey", secret="mysecret")
+        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response(
+            f"https://api-v2.hearthis.at/set/{playlist.permalink}/",
+            'get_playlist_tracks_response.json',
+            key="mykey",
+            secret="mysecret"
+        )
         user = mocks.create_logged_in_user()
         sut = HearThis(client_session_mock)
 
@@ -195,7 +234,8 @@ class HearThisTests(IsolatedAsyncioTestCase):
     async def test_that_api_receives_expected_data_when_delete_track_from_playlist(self):
         # Arrange
         client_session_mock = AsyncMock()
-        client_session_mock.post = mocks.RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/set_ajax_add.php", 'single_playlist.json')
+        client_session_mock.post = mocks.RequestContextManagerMock.with_json_response(
+            "https://api-v2.hearthis.at/set_ajax_add.php", 'single_playlist.json')
         user = mocks.create_logged_in_user()
         playlist = mocks.create_playlist()
         track = mocks.create_single_track()
@@ -205,7 +245,8 @@ class HearThisTests(IsolatedAsyncioTestCase):
         result = await sut.delete_track_from_playlist(user, track, playlist)
 
         # Assert
-        posted_data = mocks.RequestContextManagerMock.pop_post_data_for_url("https://api-v2.hearthis.at/set_ajax_add.php")
+        posted_data = mocks.RequestContextManagerMock.pop_post_data_for_url(
+            "https://api-v2.hearthis.at/set_ajax_add.php")
         expected_data = {
             'action': 'deleteentry',
             'id': track.id,
@@ -220,7 +261,8 @@ class HearThisTests(IsolatedAsyncioTestCase):
     async def test_that_api_receives_expected_data_when_delete_playlist(self):
         # Arrange
         client_session_mock = AsyncMock()
-        client_session_mock.post = mocks.RequestContextManagerMock.with_return_value("https://api-v2.hearthis.at/set_ajax_edit.php", 'DELETED')
+        client_session_mock.post = mocks.RequestContextManagerMock.with_return_value(
+            "https://api-v2.hearthis.at/set_ajax_edit.php", 'DELETED')
         user = mocks.create_logged_in_user()
         playlist = mocks.create_playlist()
         sut = HearThis(client_session_mock)
@@ -229,7 +271,8 @@ class HearThisTests(IsolatedAsyncioTestCase):
         await sut.delete_playlist(user, playlist)
 
         # Assert
-        posted_data = mocks.RequestContextManagerMock.pop_post_data_for_url("https://api-v2.hearthis.at/set_ajax_edit.php")
+        posted_data = mocks.RequestContextManagerMock.pop_post_data_for_url(
+            "https://api-v2.hearthis.at/set_ajax_edit.php")
         expected_data = {
             'action': 'delete',
             'key': 'mykey',
@@ -242,7 +285,15 @@ class HearThisTests(IsolatedAsyncioTestCase):
     async def test_that_search_returns_expected_data(self):
         # Arrange
         client_session_mock = AsyncMock()
-        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/search/", 'search_response.json', key="mykey", secret="mysecret", t="MySearchQuery", page="1", count="5")
+        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response(
+            "https://api-v2.hearthis.at/search/",
+            'search_response.json',
+            key="mykey",
+            secret="mysecret",
+            t="MySearchQuery",
+            page="1",
+            count="5"
+        )
         user = mocks.create_logged_in_user()
         sut = HearThis(client_session_mock)
 
@@ -252,13 +303,22 @@ class HearThisTests(IsolatedAsyncioTestCase):
         # Assert
         self.assertIsNotNone(result)
         feed = result[0]
-        self.assertEqual(feed.title, "Shawne @ Back To The Roots 2 (05.07.2014)")
+        self.assertEqual(
+            feed.title, "Shawne @ Back To The Roots 2 (05.07.2014)")
         self.assertEqual(feed.id, 48250)
 
     async def test_that_result_is_empty_when_limit_reached_response_occurs(self):
         # Arrange
         client_session_mock = AsyncMock()
-        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/search/", 'limit_reached_response.json', key="mykey", secret="mysecret", t="House", page="1", count="5")
+        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response(
+            "https://api-v2.hearthis.at/search/",
+            'limit_reached_response.json',
+            key="mykey",
+            secret="mysecret",
+            t="House",
+            page="1",
+            count="5"
+        )
         user = mocks.create_logged_in_user()
         sut = HearThis(client_session_mock)
 
@@ -272,7 +332,15 @@ class HearThisTests(IsolatedAsyncioTestCase):
     async def test_that_expcetion_is_raised_when_count_excceeds_max_count(self):
         # Arrange
         client_session_mock = AsyncMock()
-        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/search/", 'search_response.json', key="mykey", secret="mysecret", t="MySearchQuery", page="1", count="5")
+        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response(
+            "https://api-v2.hearthis.at/search/",
+            'search_response.json',
+            key="mykey",
+            secret="mysecret",
+            t="MySearchQuery",
+            page="1",
+            count="5"
+        )
         user = mocks.create_logged_in_user()
         category = mocks.create_category()
         sut = HearThis(client_session_mock)
@@ -281,42 +349,56 @@ class HearThisTests(IsolatedAsyncioTestCase):
         with self.assertRaises(Exception) as context:
             await sut.search(user, "MySearchQuery", None, None, 1, 21)
 
-        self.assertTrue('maximum allowed pagecount is 20' in str(context.exception))
+        self.assertTrue(
+            'maximum allowed pagecount is 20' in str(context.exception))
 
         # get_feeds
         with self.assertRaises(Exception) as context:
             await sut.get_feeds(user, "", None, None, 1, 21)
 
-        self.assertTrue('maximum allowed pagecount is 20' in str(context.exception))
+        self.assertTrue(
+            'maximum allowed pagecount is 20' in str(context.exception))
 
         # get_category_tracks
         with self.assertRaises(Exception) as context:
             await sut.get_category_tracks(user, category, 0, 21)
 
-        self.assertTrue('maximum allowed pagecount is 20' in str(context.exception))
+        self.assertTrue(
+            'maximum allowed pagecount is 20' in str(context.exception))
 
         # get_playlists
         with self.assertRaises(Exception) as context:
             await sut.get_playlists(user, 1, 21)
 
-        self.assertTrue('maximum allowed pagecount is 20' in str(context.exception))
+        self.assertTrue(
+            'maximum allowed pagecount is 20' in str(context.exception))
 
         # get_playlists
         with self.assertRaises(Exception) as context:
             await sut.get_playlists(user, 1, 21)
 
-        self.assertTrue('maximum allowed pagecount is 20' in str(context.exception))
+        self.assertTrue(
+            'maximum allowed pagecount is 20' in str(context.exception))
 
         # get_artist_tracks
         with self.assertRaises(Exception) as context:
             await sut.get_artist_tracks(user, "permalink", page=1, count=21)
 
-        self.assertTrue('maximum allowed pagecount is 20' in str(context.exception))
+        self.assertTrue(
+            'maximum allowed pagecount is 20' in str(context.exception))
 
     async def test_that_search_result_user_is_accessible_by_properties(self):
         # Arrange
         client_session_mock = AsyncMock()
-        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/search/", 'search_response.json', key="mykey", secret="mysecret", t="MySearchQuery", page="1", count="5")
+        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response(
+            "https://api-v2.hearthis.at/search/",
+            'search_response.json',
+            key="mykey",
+            secret="mysecret",
+            t="MySearchQuery",
+            page="1",
+            count="5"
+        )
         user = mocks.create_logged_in_user()
         sut = HearThis(client_session_mock)
 
@@ -330,7 +412,15 @@ class HearThisTests(IsolatedAsyncioTestCase):
     async def test_that_playlist_user_is_accessible_by_properties(self):
         # Arrange
         client_session_mock = AsyncMock()
-        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/mymail-oc", 'get_playlists_response.json', key="mykey", secret="mysecret", page="1", count="5", type="playlists")
+        client_session_mock.get = mocks.RequestContextManagerMock.with_json_response(
+            "https://api-v2.hearthis.at/mymail-oc",
+            'get_playlists_response.json',
+            key="mykey",
+            secret="mysecret",
+            page="1",
+            count="5",
+            type="playlists"
+        )
         user = mocks.create_logged_in_user()
         sut = HearThis(client_session_mock)
 
@@ -344,7 +434,15 @@ class HearThisTests(IsolatedAsyncioTestCase):
     async def test_that_get_artist_tracks_returns_expected_data(self):
         # Arrange
         mock = AsyncMock()
-        mock.get = mocks.RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/myuserpermalink/", 'get_artist_tracks_response.json', key="mykey", secret="mysecret", type="tracks", page="1", count="5")
+        mock.get = mocks.RequestContextManagerMock.with_json_response(
+            "https://api-v2.hearthis.at/myuserpermalink/",
+            'get_artist_tracks_response.json',
+            key="mykey",
+            secret="mysecret",
+            type="tracks",
+            page="1",
+            count="5"
+        )
         user = mocks.create_logged_in_user()
         sut = HearThis(mock)
 
@@ -354,14 +452,18 @@ class HearThisTests(IsolatedAsyncioTestCase):
         # Assert
         self.assertIsNotNone(result)
         feed = result[0]
-        self.assertEqual(feed.title, "Shawne @ Back To The Roots 2 (05.07.2014)")
+        self.assertEqual(
+            feed.title, "Shawne @ Back To The Roots 2 (05.07.2014)")
         self.assertIsNotNone(feed.user.username)
         self.assertEqual(feed.id, 48250)
 
     async def test_that_get_single_artist_returns_expected_data(self):
         # Arrange
         mock = AsyncMock()
-        mock.get = mocks.RequestContextManagerMock.with_json_response("https://api-v2.hearthis.at/myuserpermalink", 'get_single_artist_response.json', )
+        mock.get = mocks.RequestContextManagerMock.with_json_response(
+            "https://api-v2.hearthis.at/myuserpermalink",
+            'get_single_artist_response.json',
+            )
         user = mocks.create_logged_in_user()
         sut = HearThis(mock)
 
