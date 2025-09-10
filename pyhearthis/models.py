@@ -141,7 +141,6 @@ class SingleTrack(NamedTuple):
     waveform_data_json: str
     waveform_url: str
     user: dict
-    counts: dict
     stream_url: str
     preview_url: str
     download_url: str
@@ -154,6 +153,7 @@ class SingleTrack(NamedTuple):
     favoritings_count: str
     reshares_count: str
     comment_count: str
+    counts: dict
     played: bool
     favorited: bool
     liked: bool
@@ -182,25 +182,26 @@ class Playlist(NamedTuple):
 
 
 class SingleArtist(NamedTuple):
-    id: int
+    id: str
     permalink: str
     username: str
+    caption: str
     uri: str
-    permalink: str
     permalink_url: str
+    thumb_url: str
     avatar_url: str
+    p_url: str
     background_url: str
     description: str
-    track_count: int
-    playlist_count: int
-    likes_count: int
-    followers_count: int
+    geo: str
+    track_count: str
+    playlist_count: str
+    likes_count: str
+    followers_count: str
+    following_count: str
+    counts: dict
     following: bool
-    following_count: int
     premium: bool
     allow_push: int
-    geo: str
-    p_url: str
-    avatar_url: str
-    thumb_url: str
-    caption: str
+    is_fan: bool
+    featured_sound: str

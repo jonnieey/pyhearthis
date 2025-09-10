@@ -19,5 +19,15 @@
 "uri":"https://api-v2.hearthis.at/asdasd/",
 "caption":"",
 "username":"asdasd",
-"permalink":"aasdasd"
+"permalink":"aasdasd",
+"counts":{"tracks":381,
+  "playlists":68,
+  "likes":68,
+  "followers":628,
+  "following":383},
+  "following":false,
+  "premium":true,
+  "allow_push":1,
+  "is_fan":false,
+  "featured_sound":"0"}
 }
