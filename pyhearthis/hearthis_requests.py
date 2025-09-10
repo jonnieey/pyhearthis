@@ -29,7 +29,7 @@ class PlaylistsRequest(NamedTuple):
     secret: str
     page: int = 1
     count: int = 5
-    type: str = 'playlists'
+    type: str = "playlists"
 
 
 class FeedRequest(NamedTuple):
@@ -48,8 +48,8 @@ class AddPlaylistRequest(NamedTuple):
     key: str
     secret: str
     new_set: str
-    category: str = ''
-    source: str = ''
+    category: str = ""
+    source: str = ""
     privat: int = 1
     sort_config: int = 1
     action: str = "createnew"
@@ -60,7 +60,7 @@ class AddToExistingPlaylistRequest(NamedTuple):
     secret: str
     track_id: int
     set: int
-    action: str = 'add'
+    action: str = "add"
 
 
 class AddToNewPlaylistRequest(NamedTuple):
@@ -68,7 +68,7 @@ class AddToNewPlaylistRequest(NamedTuple):
     secret: str
     track_id: int
     new_set: str
-    action: str = 'add'
+    action: str = "add"
 
 
 class DeleteFromPlaylistRequest(NamedTuple):
@@ -76,7 +76,7 @@ class DeleteFromPlaylistRequest(NamedTuple):
     secret: str
     id: int
     set_id: int
-    action: str = 'deleteentry'
+    action: str = "deleteentry"
 
 
 class GetPlaylistItemsRequest(NamedTuple):
@@ -89,7 +89,7 @@ class DeletePlaylistRequest(NamedTuple):
     key: str
     secret: str
     set: int
-    action: str = 'delete'
+    action: str = "delete"
 
 
 class SearchRequest(NamedTuple):
@@ -109,8 +109,9 @@ class ArtistTracksRequest(NamedTuple):
     page: int = 1
     count: int = 5
 
+
 class FollowRequest(NamedTuple):
     key: str
     secret: str
     userid: str
-    action: str = 'follow'
+    action: str = "follow"

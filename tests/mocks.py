@@ -6,7 +6,6 @@ from pyhearthis.models import Category, LoggedinUser, Playlist, SingleTrack
 
 
 class RequestContextManagerMock:
-
     return_values = dict()
     post_values = dict()
 
@@ -61,8 +60,10 @@ class RequestContextManagerMock:
 
     @staticmethod
     def with_json_response(url: str, json_file: str, **kwargs):
-        file = os.path.abspath(os.path.join(os.path.dirname(__file__), "response_data", json_file))
-        with open(file, 'r') as json_data:
+        file = os.path.abspath(
+            os.path.join(os.path.dirname(__file__), "response_data", json_file)
+        )
+        with open(file, "r") as json_data:
             data = json_data.read()
 
         response = json.loads(data)
@@ -83,8 +84,10 @@ def replace_key(dictionary: dict, old_key: str, new_key: str) -> None:
 
 
 def create_logged_in_user():
-    file = os.path.abspath(os.path.join(os.path.dirname(__file__), "response_data", 'login_response.json'))
-    with open(file, 'r') as json_data:
+    file = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "response_data", "login_response.json")
+    )
+    with open(file, "r") as json_data:
         data = json_data.read()
 
     response = json.loads(data)
@@ -93,8 +96,10 @@ def create_logged_in_user():
 
 
 def create_single_track() -> SingleTrack:
-    file = os.path.abspath(os.path.join(os.path.dirname(__file__), "response_data", 'single_track.json'))
-    with open(file, 'r') as json_data:
+    file = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "response_data", "single_track.json")
+    )
+    with open(file, "r") as json_data:
         data = json_data.read()
 
     response = json.loads(data)
@@ -102,8 +107,10 @@ def create_single_track() -> SingleTrack:
 
 
 def create_playlist() -> Playlist:
-    file = os.path.abspath(os.path.join(os.path.dirname(__file__), "response_data", 'single_playlist.json'))
-    with open(file, 'r') as json_data:
+    file = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "response_data", "single_playlist.json")
+    )
+    with open(file, "r") as json_data:
         data = json_data.read()
 
     response = json.loads(data)
@@ -111,8 +118,10 @@ def create_playlist() -> Playlist:
 
 
 def create_category() -> Category:
-    file = os.path.abspath(os.path.join(os.path.dirname(__file__), "response_data", 'single_category.json'))
-    with open(file, 'r') as json_data:
+    file = os.path.abspath(
+        os.path.join(os.path.dirname(__file__), "response_data", "single_category.json")
+    )
+    with open(file, "r") as json_data:
         data = json_data.read()
 
     response = json.loads(data)

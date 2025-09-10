@@ -1,6 +1,7 @@
 from datetime import datetime
-from typing import NamedTuple, Any
+from typing import NamedTuple
 from urllib.parse import urlencode
+
 
 def is_not_empty(item) -> bool:
     if item is None:
@@ -8,40 +9,52 @@ def is_not_empty(item) -> bool:
 
     if isinstance(item, str):
         return len(item.strip()) > 0
-    
+
     return True
 
+
 def as_query_param(item: NamedTuple) -> str:
-    dictionary = {k:v for (k,v) in item._asdict().items() if is_not_empty(v)}
+    dictionary = {k: v for (k, v) in item._asdict().items() if is_not_empty(v)}
     return urlencode(dictionary)
 
+
 def get_value(key, value):
-    
     if key == "downloadable":
-        return True if (value == 1) or value == '1' else False
+        return True if (value == 1) or value == "1" else False
 
     if key == "bpm":
         return float(value)
-    
-    if key == "id" or key == "user_id" or key == "duration" or key == "release_timestamp" or key=="track_id" or key=="set" or key=="set_id" or "count" in key:
+
+    if (
+        key == "id"
+        or key == "user_id"
+        or key == "duration"
+        or key == "release_timestamp"
+        or key == "track_id"
+        or key == "set"
+        or key == "set_id"
+        or "count" in key
+    ):
         if value is None:
             return int(0)
-        
+
         return int(value)
 
     return value
 
-def cast_dict(items: dict, omit_empty: bool=False) -> dict:
-    if omit_empty:
-        return {k:get_value(k, v) for (k,v) in items.items() if is_not_empty(v) }
 
-    return {k:get_value(k, v) for (k,v) in items.items() }
+def cast_dict(items: dict, omit_empty: bool = False) -> dict:
+    if omit_empty:
+        return {k: get_value(k, v) for (k, v) in items.items() if is_not_empty(v)}
+
+    return {k: get_value(k, v) for (k, v) in items.items()}
+
 
 def cast_list(items: dict) -> list:
     return list(map(cast_dict, items))
 
-class LoggedinUser(NamedTuple):
 
+class LoggedinUser(NamedTuple):
     id: int
     permalink: str
     username: str
@@ -67,6 +80,7 @@ class LoggedinUser(NamedTuple):
     secret: str
     key: str
 
+
 class User(NamedTuple):
     id: int
     permalink: str
@@ -74,13 +88,15 @@ class User(NamedTuple):
     uri: str
     permalink_url: str
     avatar_url: str
-    caption: str = ''
+    caption: str = ""
+
 
 class Category(NamedTuple):
     id: str
     name: str
     url: str
     api_url: str
+
 
 class SingleTrack(NamedTuple):
     id: int
@@ -129,6 +145,7 @@ class SingleTrack(NamedTuple):
     fan_exclusive_play: int = 0
     fan_exclusive_download: int = 0
 
+
 class Playlist(NamedTuple):
     id: int
     user_id: int
@@ -142,6 +159,7 @@ class Playlist(NamedTuple):
     artwork_url: str
     track_count: int
     user: User
+
 
 class SingleArtist(NamedTuple):
     id: int
@@ -166,7 +184,3 @@ class SingleArtist(NamedTuple):
     avatar_url: str
     thumb_url: str
     caption: str
-
-
-
-
