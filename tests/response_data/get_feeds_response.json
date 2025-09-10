@@ -49,6 +49,25 @@
       "reshares_count": 2,
       "reshared": false,
       "played": false,
-      "liked": false
+      "liked": false,
+      "unix_created_at": 1691658232,
+      "update_timestamp": 0,
+      "geopoint": [50.8278,12.9214],
+      "tags_arr": [],
+      "taged_artists_arr": [],
+      "subcategories_arr": [],
+      "genre_own": "",
+      "thumb_hires": "https://img.hearthis.at/3/1/5/_/uploads/605/image_track/9786805/w400_h400_q70_ptrue_v2_----cropped_1691658252513.jpg",
+      "waveform_data_json": "https://cdn.hearthis.at/9786805/data/3000/data.js?t=1691658232",
+      "counts": {"plays":21,"downloads":0,"favoritings":1,"reshares":0,"comments":0},
+      "transcript": "https://api-v2.hearthis.at/crecs/crsv-one-day-ep/transcript/",
+      "features": "https://api-v2.hearthis.at/crecs/crsv-one-day-ep/features/",
+      "related": "https://api-v2.hearthis.at/crecs/crsv-one-day-ep/related/",
+      "is_fan": false,
+      "fan_exclusive_play": 0,
+      "fan_exclusive_download": 0,
+      "is_live": false,
+      "is_live_video": false,
+      "video_stream": ""
     }
-  ]
+]

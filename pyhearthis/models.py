@@ -1,4 +1,3 @@
-from datetime import datetime
 from typing import NamedTuple
 from urllib.parse import urlencode
 
@@ -33,8 +32,9 @@ def get_value(key, value):
         or key == "track_id"
         or key == "set"
         or key == "set_id"
-        or "count" in key
+        or "_count" in key
     ):
+        # TODO handle counts field
         if value is None:
             return int(0)
 
@@ -55,7 +55,7 @@ def cast_list(items: dict) -> list:
 
 
 class LoggedinUser(NamedTuple):
-    id: int
+    id: str
     permalink: str
     username: str
     caption: str
@@ -67,14 +67,17 @@ class LoggedinUser(NamedTuple):
     background_url: str
     description: str
     geo: str
-    track_count: int
-    playlist_count: int
-    likes_count: int
-    followers_count: int
-    following_count: int
-    following: int
-    premium: int
+    track_count: str
+    playlist_count: str
+    likes_count: str
+    followers_count: str
+    following_count: str
+    counts: dict
+    following: bool
+    premium: bool
     allow_push: int
+    is_fan: bool
+    featured_sound: str
     email: str
     locale: str
     secret: str
@@ -99,51 +102,68 @@ class Category(NamedTuple):
 
 
 class SingleTrack(NamedTuple):
-    id: int
-    created_at: datetime
-    private: int
-    release_date: datetime
+    id: str
+    private: str
+    created_at: str
+    release_date: str
     release_timestamp: int
-    geo: str
-    user_id: int
-    duration: int
+    unix_created_at: int
+    update_timestamp: int
+    user_id: str
+    duration: str
     permalink: str
     description: str
-    downloadable: bool
+    geo: str
+    geopoint: list[float]
+    tags: str
+    tags_arr: list[str]
+    taged_artists: str
+    taged_artists_arr: list[str]
+    subcategories_arr: list[str]
+    bpm: str
+    key: str
+    license: str
+    version: str
+    type: str
+    downloadable: str
     genre: str
     genre_slush: str
+    genre_own: str
     title: str
     uri: str
     permalink_url: str
     thumb: str
+    thumb_hires: str
     artwork_url: str
+    artwork_url_retina: str
     background_url: str
     waveform_data: str
+    waveform_data_json: str
     waveform_url: str
-    user: User
+    user: dict
+    counts: dict
     stream_url: str
-    download_url: str
-    playback_count: int
-    download_count: int
-    favoritings_count: int
-    favorited: bool
-    comment_count: int
-    tags: str
-    taged_artists: str
-    bpm: float
-    key: str
-    type: str
-    license: str
-    version: str
-    artwork_url_retina: str
     preview_url: str
+    download_url: str
     download_filename: str
-    reshares_count: int
-    reshared: bool
+    transcript: str
+    features: str
+    related: str
+    playback_count: str
+    download_count: str
+    favoritings_count: str
+    reshares_count: str
+    comment_count: str
     played: bool
+    favorited: bool
     liked: bool
-    fan_exclusive_play: int = 0
-    fan_exclusive_download: int = 0
+    reshared: bool
+    is_fan: bool
+    fan_exclusive_play: int
+    fan_exclusive_download: int
+    is_live: bool
+    is_live_video: bool
+    video_stream: str
 
 
 class Playlist(NamedTuple):

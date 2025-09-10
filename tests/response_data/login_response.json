@@ -22,5 +22,15 @@
     "email": "mymail@test.de",
     "locale": "de",
     "secret": "mysecret",
-    "key": "mykey"
+    "key": "mykey",
+    "counts": {
+      "tracks": 0,
+      "playlists": 0,
+      "likes": 2,
+      "followers": 1,
+      "following": 6
+    },
+    "is_fan": false,
+    "featured_sound": "0"
 }
+
